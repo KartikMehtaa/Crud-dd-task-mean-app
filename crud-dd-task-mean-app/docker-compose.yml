@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build: ./backend
+    container_name: backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/tutorials
+    depends_on:
+      - mongo
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:
