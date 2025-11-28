@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Fetch Repo') {
+            steps {
+                git url: "https://github.com/KartikMehtaa/Crud-dd-task-mean-app.git", branch: "master"
+                echo 'Repo fetched successfully'
+            }
+        }
+
+        stage('Deploy App') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockercred', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    sh """
+                        echo $PASS | docker login -u $USER --password-stdin
+                        docker pull $USER/backend:latest
+                        docker pull $USER/frontend:latest
+                        docker pull mongo:6.0
+                        docker pull nginx:alpine
+                        cd crud-dd-task-mean-app
+                        docker compose up -d
+                    """
+                }
+                echo 'Application deployed successfully'
+            }
+        }
+    }
+}
