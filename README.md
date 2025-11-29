@@ -82,10 +82,12 @@ Check the logs of Nginx and other containers for any issues.
 
 9️⃣ Verify the Application
 
-Open a browser and navigate to the EC2 public IP.
+Open a browser and navigate to the EC2 public ip.
 
 The Angular frontend should be live.
 
 API requests should be correctly routed to the backend.
 
 Check connectivity to MongoDB if required.
+app live http://13.204.84.180
+
